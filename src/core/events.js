@@ -159,8 +159,8 @@ PROTOTYPE._assignInitialEvents = function(event) {
 	var options = this.options,
 		showTarget = options.show.target,
 		hideTarget = options.hide.target,
-		showEvents = options.show.event ? $.trim('' + options.show.event).split(' ') : [],
-		hideEvents = options.hide.event ? $.trim('' + options.hide.event).split(' ') : [];
+		showEvents = options.show.event ? options.show.event.trim().split(' ') : [],
+		hideEvents = options.hide.event ? options.hide.event.trim().split(' ') : [];
 
 	// Catch remove/removeqtip events on target element to destroy redundant tooltips
 	this._bind(this.elements.target, ['remove', 'removeqtip'], function() {
@@ -226,8 +226,8 @@ PROTOTYPE._assignEvents = function() {
 		documentTarget = $(document),
 		windowTarget = $(window),
 
-		showEvents = options.show.event ? $.trim('' + options.show.event).split(' ') : [],
-		hideEvents = options.hide.event ? $.trim('' + options.hide.event).split(' ') : [];
+		showEvents = options.show.event ? options.show.event.trim().split(' ') : [],
+		hideEvents = options.hide.event ? options.hide.event.trim().split(' ') : [];
 
 
 	// Assign passed event callbacks
