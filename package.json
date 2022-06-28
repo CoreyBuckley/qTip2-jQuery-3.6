@@ -2,9 +2,15 @@
   "name": "qtip2",
   "title": "qTip2 - Pretty powerful tooltips",
   "description": "Introducing... qTip2. The second generation of the advanced qTip plugin for the ever popular jQuery framework.",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "homepage": "http://qtip2.com",
   "author": "Craig Michael Thompson <craig@craigsworks.com> (http://craigsworks.com/)",
+  "contributors": [
+    {
+      "name": "Piroska Barjak",
+      "email": "piroskadar@gmail.com"
+    }
+  ],
   "main": "dist/jquery.qtip.js",
   "scripts": {
     "build": "npm install && grunt",
@@ -46,8 +52,9 @@
     }
   ],
   "dependencies": {
+    "imagesloaded": ">=3.0.0",
     "jquery": ">=1.6.0",
-    "imagesloaded": ">=3.0.0"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
