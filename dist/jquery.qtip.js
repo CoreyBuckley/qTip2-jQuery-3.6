@@ -1,12 +1,12 @@
 /*
- * qTip2 - Pretty powerful tooltips - v3.0.3-15-
+ * qTip2 - Pretty powerful tooltips - v3.0.3-22-
  * http://qtip2.com
  *
  * Copyright (c) 2022 
  * Released under the MIT licenses
  * http://jquery.org/license
  *
- * Date: Tue Jun 28 2022 10:26 GMT+0200+0200
+ * Date: Tue Jul 12 2022 12:28 EDT-0400
  * Plugins: tips modal viewport svg imagemap ie6
  * Styles: core basic css3
  */
@@ -303,14 +303,14 @@ PROTOTYPE.destroy = function(immediate) {
 	return this.target;
 };
 ;function invalidOpt(a) {
-	return a === NULL || !_.isObject(a);
+	return a === NULL || !(typeof a === 'object' && a !== null);
 }
 
 function invalidContent(c) {
-	return !($.isFunction(c) || 
-            c && c.attr || 
-            c.length || 
-            _.isObject(c) && (c.jquery || c.then));
+	return !($.isFunction(c) ||
+            c && c.attr ||
+            c.length ||
+            (typeof c === 'object' && c !== null) && (c.jquery || c.then));
 }
 
 // Option object sanitizer
@@ -1061,7 +1061,7 @@ PROTOTYPE.toggle = function(state, event) {
 
 		// Cache mousemove events for positioning purposes (if not already tracking)
 		if(!trackingBound && posOptions.target === 'mouse' && posOptions.adjust.mouse) {
-			$(document).bind('mousemove.'+NAMESPACE, this._storeMouse);
+			$(document).on('mousemove.'+NAMESPACE, this._storeMouse);
 			trackingBound = TRUE;
 		}
 
@@ -1085,7 +1085,7 @@ PROTOTYPE.toggle = function(state, event) {
 
 		// Remove mouse tracking event if not needed (all tracking qTips are hidden)
 		if(trackingBound && !$(SELECTOR+'[tracking="true"]:visible', opts.solo).not(tooltip).length) {
-			$(document).unbind('mousemove.'+NAMESPACE);
+			$(document).off('mousemove.'+NAMESPACE);
 			trackingBound = FALSE;
 		}
 
@@ -1457,8 +1457,8 @@ PROTOTYPE._assignInitialEvents = function(event) {
 	var options = this.options,
 		showTarget = options.show.target,
 		hideTarget = options.hide.target,
-		showEvents = options.show.event ? $.trim('' + options.show.event).split(' ') : [],
-		hideEvents = options.hide.event ? $.trim('' + options.hide.event).split(' ') : [];
+		showEvents = options.show.event ? options.show.event.trim().split(' ') : [],
+		hideEvents = options.hide.event ? options.hide.event.trim().split(' ') : [];
 
 	// Catch remove/removeqtip events on target element to destroy redundant tooltips
 	this._bind(this.elements.target, ['remove', 'removeqtip'], function() {
@@ -1524,8 +1524,8 @@ PROTOTYPE._assignEvents = function() {
 		documentTarget = $(document),
 		windowTarget = $(window),
 
-		showEvents = options.show.event ? $.trim('' + options.show.event).split(' ') : [],
-		hideEvents = options.hide.event ? $.trim('' + options.hide.event).split(' ') : [];
+		showEvents = options.show.event ? options.show.event.trim().split(' ') : [],
+		hideEvents = options.hide.event ? options.hide.event.trim().split(' ') : [];
 
 
 	// Assign passed event callbacks
@@ -1931,7 +1931,7 @@ if(!$.ui) {
 	};
 }
 ;// qTip version
-QTIP.version = '3.0.3-15-';
+QTIP.version = '3.0.3-22-';
 
 // Base ID for all qTips
 QTIP.nextid = 0;
@@ -2724,22 +2724,21 @@ OVERLAY = function()
 			elem = self.elem = $('<div />', {
 				id: 'qtip-overlay',
 				html: '<div></div>',
-				mousedown: function() { return FALSE; }
-			})
+			}).on('mousedown', function() { return FALSE; })
 			.hide();
 
 			// Make sure we can't focus anything outside the tooltip
-			$(document.body).bind('focusin'+MODALSELECTOR, stealFocus);
+			$(document.body).on('focusin'+MODALSELECTOR, stealFocus);
 
 			// Apply keyboard "Escape key" close handler
-			$(document).bind('keydown'+MODALSELECTOR, function(event) {
+			$(document).on('keydown'+MODALSELECTOR, function(event) {
 				if(current && current.options.show.modal.escape && event.keyCode === 27) {
 					current.hide(event);
 				}
 			});
 
 			// Apply click handler for blur option
-			elem.bind('click'+MODALSELECTOR, function(event) {
+			elem.on('click'+MODALSELECTOR, function(event) {
 				if(current && current.options.show.modal.blur) {
 					current.hide(event);
 				}
@@ -3306,7 +3305,7 @@ $.extend(TRUE, QTIP.defaults, {
 
 	var shape = (area.attr('shape') || 'rect').toLowerCase().replace('poly', 'polygon'),
 		image = $('img[usemap="#'+area.parent('map').attr('name')+'"]'),
-		coordsString = $.trim(area.attr('coords')),
+		coordsString = area.attr('coords').trim(),
 		coordsArray = coordsString.replace(/,$/, '').split(','),
 		imageOffset, coords, i, result, len;
 

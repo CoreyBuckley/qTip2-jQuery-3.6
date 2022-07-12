@@ -1,12 +1,12 @@
 function invalidOpt(a) {
-	return a === NULL || !_.isObject(a);
+	return a === NULL || !(typeof a === 'object' && a !== null);
 }
 
 function invalidContent(c) {
-	return !($.isFunction(c) || 
-            c && c.attr || 
-            c.length || 
-            _.isObject(c) && (c.jquery || c.then));
+	return !($.isFunction(c) ||
+            c && c.attr ||
+            c.length ||
+            (typeof c === 'object' && c !== null) && (c.jquery || c.then));
 }
 
 // Option object sanitizer

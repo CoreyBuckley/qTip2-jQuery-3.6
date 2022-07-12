@@ -53,8 +53,7 @@
   ],
   "dependencies": {
     "imagesloaded": ">=3.0.0",
-    "jquery": ">=1.6.0",
-    "lodash": "^4.17.21"
+    "jquery": ">=1.6.0"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
